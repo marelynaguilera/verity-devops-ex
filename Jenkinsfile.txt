@@ -30,12 +30,12 @@ pipeline {
     stage('Code Analysis') {
         steps {
             script {
-            scannerHome = tool 'sonar-scanner'
-        }
-        withSonarQubeEnv('MySonarQubeServer')
-        {
-        sh "${scannerHome}/bin/sonar-scanner"
-        }
+                scannerHome = tool 'sonar-scanner'
+            }
+            withSonarQubeEnv('MySonarQubeServer')
+            {
+            sh "${scannerHome}/bin/sonar-scanner"
+            }
         }
     }
     //Code ends for stage Code Analysis
@@ -53,6 +53,16 @@ pipeline {
     }
 		//Code ends for stage Unit Test
 
+    //Code starts for stage Code Coverage
+    stage('Code Coverage') {
+        // Generate coverage report
+        steps {
+            step([
+                $class: 'JacocoPublisher'
+            ])
+        }
+    }
+    //Code ends for stage Code Coverage
 
   }
 }
